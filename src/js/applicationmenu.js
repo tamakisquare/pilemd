@@ -141,7 +141,9 @@ const HELP_TEMPLATE = {
         'JRekier\n' +
         'zenichi\n' +
         'aodag\n' +
-        'inoshiro\n')}
+        'inoshiro\n' +
+        'wonderful_panda\n' +
+        'shimizukawa\n')}
     }
   ]
 };
