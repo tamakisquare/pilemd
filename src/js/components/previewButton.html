@@ -1,0 +1,22 @@
+<div class="my-editor-header-right">
+
+  <div class="my-editor-header-wide-buttons">
+    <div id="button-preview"
+            class="my-editor-button
+              my-editor-button-preview"
+            @click="togglePreview"
+            title="Toggle Preview">
+      <i v-if="!isPreview" class="material-icons">remove_red_eye</i><span v-if="!isPreview" class="my-editor-button-text">Preview</span>
+      <i v-if="isPreview" class="material-icons">keyboard</i><span v-if="isPreview" class="my-editor-button-text">Edit</span>
+    </div>
+  </div>
+  <div class="my-editor-header-small-buttons">
+    <div id="button-preview"
+            class="my-editor-button my-editor-button-preview"
+            @click="togglePreview"
+            title="Toggle Preview">
+      <i v-if="!isPreview" class="material-icons">remove_red_eye</i>
+      <i v-if="isPreview" class="material-icons">keyboard</i>
+    </div>
+  </div>
+</div>
