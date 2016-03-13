@@ -1,4 +1,4 @@
-# Piled
+# PileMd
 
 https://pilemd.com/
 
