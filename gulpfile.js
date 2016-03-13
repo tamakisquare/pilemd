@@ -49,6 +49,10 @@ gulp.task('electron-linux', function(done) {
       apppath[0] + '/README.md',
       fs.readFileSync('./forlinux/README.md')
     );
+    fs.writeFileSync(
+      apppath[0] + '/LICENSE',
+      fs.readFileSync('./LICENSE')
+    );
   });
 });
 
