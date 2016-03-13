@@ -7,8 +7,8 @@ const Note = models.Note;
 const co = require('../constants');
 const ebg = require('../utils/ebg');
 
-const qiitaClientId = ebg(co.slice(69, 109));
-const qiitaClientSecret = ebg(co.slice(109, 149));
+const qiitaClientId = ebg(co.slice(0, 40));
+const qiitaClientSecret = ebg(co.slice(40, 80));
 const qiitaUrl = "https://qiita.com/api/v2/oauth/authorize?" +
   "client_id=" + qiitaClientId + "&" +
   "scope=write_qiita read_qiita";

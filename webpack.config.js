@@ -23,7 +23,8 @@ module.exports = {
     new webpack.ExternalsPlugin('commonjs', [
       'electron',
       'fs',
-      'chokidar'
+      'chokidar',
+      'datauri'
     ])
   ]
 };
