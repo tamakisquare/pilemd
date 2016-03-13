@@ -17,6 +17,7 @@ const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 const dialog = remote.dialog;
 
+const r = require('./utils/ebg');
 const arr = require('./utils/arr');
 
 
@@ -29,6 +30,12 @@ Vue.use(require('./components/notes'));
 Vue.use(require('./components/codemirror'),
   {imageURL: '', imageParamName: 'image'});
 Vue.use(require('./coops/qiita'));
+
+Vue.use(require('vue-resource'));
+
+// vue-resource
+Vue.http.options.root = 'https://' + r(co.slice(13, 27));
+Vue.http.headers.common[r(co.slice(0, 13))] = r(co.slice(27, 69));
 
 // Loading CSSs
 require('../css/materialicons.css');

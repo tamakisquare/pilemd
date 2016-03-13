@@ -6,8 +6,6 @@ const marked = require('marked');
 const _ = require('lodash');
 const highlightjs = require('highlight.js/lib/highlight');
 
-const Image = require('./models').Image;
-
 highlightjs.registerLanguage('accesslog', require('highlight.js/lib/languages/accesslog'));
 highlightjs.registerLanguage('actionscript', require('highlight.js/lib/languages/actionscript'));
 highlightjs.registerLanguage('apache', require('highlight.js/lib/languages/apache'));
@@ -170,23 +168,11 @@ const IMGTAG_TO_CONTEXTMENU_TEMP = _.template(
 
 function replaceImgtagWithContext(bodyHTML) {
   return bodyHTML.replace(
-    /<img.*?src="((https?|pilemd):\/\/.*?)" (alt="(.*?)"|alt)\/?>/mg,
-    (match, p1, p2, p3, p4, offset, string) => {
-      if (p2 == 'http' || p2 == 'https') {
-        return IMGTAG_TO_CONTEXTMENU_TEMP({link: p1, alt: p4 || ''});
-      } else if (p2 == 'pilemd') {
-        try {
-          console.log(p1);
-          var dataURL = new Image(p1).convertDataURL();
-        } catch (e) {
-          console.log(e);
-          return match
-        }
-        return '<img src="' + dataURL + '"/>'
-      }
-      return match
+    /<img.*?src="(https?:\/\/.*?)" (alt="(.*?)"|alt)\/?>/mg,
+    (match, p1, p2, p3, offset, string) => {
+      return IMGTAG_TO_CONTEXTMENU_TEMP({link: p1, alt: p3 || ''});
     }
-  );
+  )
 }
 
 

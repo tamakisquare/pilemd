@@ -4,7 +4,6 @@ const chokidar = require('chokidar');
 
 const _ = require('lodash');
 const moment = require('moment');
-const Datauri = require('datauri');
 
 const arr = require('./utils/arr');
 const uid = require('./utils/uid');
@@ -182,20 +181,11 @@ class Note extends Model {
   }
 
   get img() {
-    var matched = /(https?|pilemd):\/\/[-a-zA-Z0-9@:%_\+.~#?&//=]+?\.(png|jpeg|jpg|gif)/.exec(this.body);
+    var matched = /https?:\/\/[-a-zA-Z0-9@:%_\+.~#?&//=]+?\.(png|jpeg|jpg|gif)/.exec(this.body);
     if (!matched) {
       return null
     } else {
-      if (matched[1] == 'http' || matched[1] == 'https') {
-        return matched[0]
-      } else {
-        try {
-          var dataUrl = new Image(matched[0]).convertDataURL()
-        } catch (e) {
-          return null
-        }
-        return dataUrl
-      }
+      return matched[0]
     }
   }
 
@@ -374,34 +364,6 @@ function copyData(fromDir, toDir) {
 }
 
 
-class Image {
-  constructor (pilemdURL) {
-    if (!pilemdURL.startsWith('pilemd://images/')) {
-      throw "Incorrect Image URL"
-    }
-    this.pilemdURL = pilemdURL
-  }
-
-  makeFilePath() {
-    var p = this.pilemdURL.slice(9);
-    var basePath = getBaseLibraryPath();
-    if (!basePath || basePath.length == 0) throw "Invalid Base Path";
-    return path.join(getBaseLibraryPath(), p)
-  }
-
-  convertDataURL() {
-    return Datauri.sync(this.makeFilePath());
-  }
-
-  static fromBinary(name, frompath) {
-    var rpath = path.join('images', name);
-    var p = path.join(getBaseLibraryPath(), rpath);
-    fs.writeFileSync(p, fs.readFileSync(frompath));
-    return new this('pilemd://' + rpath);
-  }
-}
-
-
 module.exports = {
   Note: Note,
   Folder: Folder,
@@ -410,6 +372,5 @@ module.exports = {
   getBaseLibraryPath: getBaseLibraryPath,
   setBaseLibraryPath: setBaseLibraryPath,
   makeWatcher: makeWatcher,
-  copyData: copyData,
-  Image: Image
+  copyData: copyData
 };
