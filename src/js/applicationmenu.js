@@ -118,6 +118,10 @@ const HELP_TEMPLATE = {
       click: function() { require('electron').shell.openExternal('https://pilemd.com/') }
     },
     {
+      label: 'Go to Project GitHub',
+      click: function() { require('electron').shell.openExternal('https://github.com/hirokiky/pilemd/') }
+    },
+    {
       label: 'Credits',
       click: () => {alert(
         'Created by\nHiroki KIYOHARA (@hirokiky) All rights reserved.\n\n' +
