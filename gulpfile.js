@@ -18,8 +18,8 @@ var BASE_OPTION = {
     overwrite: true,
     arch: 'x64',
     version: '0.36.10',
-    'build-version': '0.8.2',
-    'app-version': '0.8.2',
+    'build-version': '0.8.3',
+    'app-version': '0.8.3',
     ignore: '(node_modules\/(codemirror|highlight.js|marked|vue|vue-resource)|src|icons|releases|.idea.*|README\.md|\.DS_Store|env|gulpfile\.js|webpack\.config\.js|\.gitignore)',
     asar: true,
     prune: true
