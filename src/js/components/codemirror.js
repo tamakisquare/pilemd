@@ -62,7 +62,8 @@ module.exports = function(Vue, options) {
       try {
         var image = Image.fromBinary(f.name, f.path);
       } catch (e) {
-        vm.$message('error', 'Failed to load and save image');
+        vm.$message('error', 'Failed to load and save image', 5000);
+        console.log(e);
         return
       }
       cm.doc.replaceRange(

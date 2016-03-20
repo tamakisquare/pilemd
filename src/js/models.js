@@ -393,11 +393,36 @@ class Image {
     return Datauri.sync(this.makeFilePath());
   }
 
+  static appendSuffix(filePath) {
+    var c = 'abcdefghijklmnopqrstuvwxyz';
+    var r = '';
+    for (var i = 0; i < 8; i++) {
+      r += c[Math.floor(Math.random() * c.length)];
+    }
+    var e = path.extname(filePath);
+    if (e.length > 0) {
+      return filePath.slice(0, -e.length) + '_' + r + e
+    } else {
+      return filePath + '_' + r
+    }
+  }
+
   static fromBinary(name, frompath) {
-    var rpath = path.join('images', name);
-    var p = path.join(getBaseLibraryPath(), rpath);
-    fs.writeFileSync(p, fs.readFileSync(frompath));
-    return new this('pilemd://' + rpath);
+    // Try creating images dir.
+    var dirPath = path.join(getBaseLibraryPath(), 'images');
+    try {fs.mkdirSync(dirPath)} catch (e) {}
+
+    var savePath = path.join(dirPath, name);
+    // Check exists or not.
+    try {
+      var fd = fs.openSync(savePath, 'r');
+      if (fd) {fs.close(fd)}
+      name = this.appendSuffix(name);
+      savePath = path.join(dirPath, name);
+    } catch(e) {}  // If not exists
+    fs.writeFileSync(savePath, fs.readFileSync(frompath));
+    var relativePath = path.join('images', name);
+    return new this('pilemd://' + relativePath);
   }
 }
 
