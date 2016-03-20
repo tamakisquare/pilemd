@@ -63,6 +63,7 @@ module.exports = function(Vue, options) {
         var image = Image.fromBinary(f.name, f.path);
       } catch (e) {
         vm.$message('error', 'Failed to load and save image');
+        return
       }
       cm.doc.replaceRange(
         IMAGE_TAG_TEMP({filename: f.name, fileurl: image.pilemdURL}),
