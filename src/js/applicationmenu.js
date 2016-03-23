@@ -123,27 +123,7 @@ const HELP_TEMPLATE = {
     },
     {
       label: 'Credits',
-      click: () => {alert(
-        'Created by\nHiroki KIYOHARA (@hirokiky) All rights reserved.\n\n' +
-        'Special thanks\n' +
-        'natsu_bm\n' +
-        'podhmo\n' +
-        'altnight\n' +
-        'yosukesuzki\n' +
-        'flagboy\n' +
-        'ymnder\n' +
-        'terapyon\n' +
-        'shin\n' +
-        'kameko\n' +
-        'ken_c_lo\n' +
-        'fukayatsu\n' +
-        'nakamuray\n' +
-        'JRekier\n' +
-        'zenichi\n' +
-        'aodag\n' +
-        'inoshiro\n' +
-        'wonderful_panda\n' +
-        'shimizukawa\n')}
+      click: function() { require('electron').shell.openExternal('https://github.com/hirokiky/pilemd/blob/master/AUTHORS') }
     }
   ]
 };
