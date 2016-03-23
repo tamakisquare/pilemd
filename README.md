@@ -8,7 +8,7 @@ https://pilemd.com/
 
 ```
 cat > js/constants.js
-module.exports = ...  # Input credentials
+module.exports = ''  // Input credentials
 ```
 
 ## Run
