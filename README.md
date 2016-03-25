@@ -29,8 +29,5 @@ Electron .
 ## Zen of PileMd
 
 * Product Design Fast
-* All for users, beyond imagination of users
 * Light Weight
 * Be cool, Be smart
-* Future, not Tomorrow
-* Think as Turing Machine degree
