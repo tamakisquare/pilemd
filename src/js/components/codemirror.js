@@ -1,6 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+
 const _ = require('lodash');
 
-const imageFile = require('../utils/imageFile');
+const Image = require('../models').Image;
 const ApplicationMenu = require('../applicationmenu').ApplicationMenu;
 
 const electron = require('electron');
@@ -17,7 +20,6 @@ const copyText = elutils.copyText;
 const cutText = elutils.cutText;
 const pasteText = elutils.pasteText;
 
-const IMAGE_UPLOADING_TEMP = _.template('![Uploading <%- filename %>...]()\n');
 const IMAGE_TAG_TEMP = _.template('![<%- filename %>](<%- fileurl %>)\n');
 
 module.exports = function(Vue, options) {
@@ -54,48 +56,21 @@ module.exports = function(Vue, options) {
   require('codemirror/mode/meta');
   require('../codemirror/piledmap');
 
-  Vue.use(require('vue-resource'));
-
-  var imageResource = Vue.resource(options.imageURL);
-
   function uploadFiles(cm, files, vm) {
     files = Array.prototype.slice.call(files, 0, 5);
     _.forEach(files, (f) => {
-      /* Before Upload
-       * Insert `Uploading` text */
-      var uploadingText = IMAGE_UPLOADING_TEMP({filename: f.name});
-      cm.doc.replaceRange(uploadingText, cm.doc.getCursor());
-
-      /* Uploading */
-      imageResource.save({}, f).then((d) => {
-        /* After Upload
-         * Replace `Uploading` text by img tag */
-        var cursor = cm.getSearchCursor(uploadingText);
-        if (cursor.findNext()) {
-          cursor.replace(IMAGE_TAG_TEMP({filename: f.name, fileurl: d.data.image}));
-        } else {
-          /* When `Uploading` text doesn't exist, some how. */
-          vm.$message(
-            'error', "Can't detect place to put the image URL",
-            5000
-          )
-        }
-      }, (d) => {
-        if (d.status == 413) {
-          vm.$message(
-            'error', 'Upload failed: Too big file',
-            5000);
-        } else if (d.data) {
-          vm.$message(
-            'error', 'Upload failed: ' + (d.data.error || 'Unexpected error'),
-            5000);
-        } else if (d.status == 0) {
-          vm.$message(
-            'error', 'Connection Error',
-            5000
-          )
-        }
-      });
+      try {
+        var image = Image.fromBinary(f.name, f.path);
+      } catch (e) {
+        vm.$message('error', 'Failed to load and save image', 5000);
+        console.log(e);
+        return
+      }
+      cm.doc.replaceRange(
+        IMAGE_TAG_TEMP({filename: f.name, fileurl: image.pilemdURL}),
+          cm.doc.getCursor()
+      );
+      vm.$message('info', 'Saved image to ' + image.makeFilePath());
     });
   }
 
@@ -188,7 +163,7 @@ module.exports = function(Vue, options) {
               type: 'separator'
             },
             {
-              label: 'Upload Image...',
+              label: 'Attach Image...',
               accelerator: (function() {
                 if (applicationmenu.IS_DARWIN) {
                   return 'Shift+Command+A'
@@ -248,16 +223,16 @@ module.exports = function(Vue, options) {
             menu.append(new MenuItem({label: 'Paste', accelerator: 'CmdOrCtrl+V',
               click: () => {pasteText(cm)}}));
             menu.append(new MenuItem({type: 'separator'}));
-            menu.append(new MenuItem({label: 'Upload Image', accelerator: 'Shift+CmdOrCtrl+A',
+            menu.append(new MenuItem({label: 'Attach Image', accelerator: 'Shift+CmdOrCtrl+A',
               click: () => {this.uploadFile()}}));
             var c = cm.getCursor();
             var token = cm.getTokenAt(c, true);
             menu.append(new MenuItem({type: 'separator'}));
             if (isLinkState(token.type)) {
-              var s = _.trim(cm.getRange(
+              var s = cm.getRange(
                 {line: c.line, ch: token.start},
                 {line: c.line, ch: token.state.overlayPos || token.end}
-              ), '[]()!');
+              );
               menu.append(new MenuItem({label: 'Copy Link',
                 click: () => {clipboard.writeText(s)}}));
               menu.append(new MenuItem({label: 'Open Link In Browser',
@@ -325,7 +300,7 @@ module.exports = function(Vue, options) {
       uploadFile: function() {
         var cm = this.cm;
         var notePaths = dialog.showOpenDialog({
-          title: 'Upload Image',
+          title: 'Attach Image',
           filters: [{name: 'Markdown', extensions: [
             'png', 'jpeg', 'jpg', 'bmp',
             'gif', 'tif', 'ico'
@@ -335,7 +310,8 @@ module.exports = function(Vue, options) {
         if (!notePaths || notePaths.length == 0) { return }
 
         var files = notePaths.map((notePath) => {
-          return imageFile.pathToFile(notePath);
+          var name = path.basename(notePath);
+          return {name: name, path: notePath}
         });
         uploadFiles(cm, files, this);
       }

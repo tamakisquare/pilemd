@@ -4,6 +4,7 @@ const chokidar = require('chokidar');
 
 const _ = require('lodash');
 const moment = require('moment');
+const Datauri = require('datauri');
 
 const arr = require('./utils/arr');
 const uid = require('./utils/uid');
@@ -180,12 +181,36 @@ class Note extends Model {
     return this.splitTitleFromBody().title;
   }
 
+  get bodyWithDataURL() {
+    return this.body.replace(
+      /!\[(.*?)]\((pilemd:\/\/.*?)\)/mg,
+      (match, p1, p2, offset, string) => {
+        try {
+          var dataURL = new Image(p2).convertDataURL();
+        } catch (e) {
+          console.log(e);
+          return match
+        }
+        return '![' + p1 + ']' + '(' + dataURL + ')';
+      }
+    );
+  }
+
   get img() {
-    var matched = /https?:\/\/[-a-zA-Z0-9@:%_\+.~#?&//=]+?\.(png|jpeg|jpg|gif)/.exec(this.body);
+    var matched = /(https?|pilemd):\/\/[-a-zA-Z0-9@:%_\+.~#?&//=]+?\.(png|jpeg|jpg|gif)/.exec(this.body);
     if (!matched) {
       return null
     } else {
-      return matched[0]
+      if (matched[1] == 'http' || matched[1] == 'https') {
+        return matched[0]
+      } else {
+        try {
+          var dataUrl = new Image(matched[0]).convertDataURL()
+        } catch (e) {
+          return null
+        }
+        return dataUrl
+      }
     }
   }
 
@@ -364,6 +389,59 @@ function copyData(fromDir, toDir) {
 }
 
 
+class Image {
+  constructor (pilemdURL) {
+    if (!pilemdURL.startsWith('pilemd://images/')) {
+      throw "Incorrect Image URL"
+    }
+    this.pilemdURL = pilemdURL
+  }
+
+  makeFilePath() {
+    var p = this.pilemdURL.slice(9);
+    var basePath = getBaseLibraryPath();
+    if (!basePath || basePath.length == 0) throw "Invalid Base Path";
+    return path.join(getBaseLibraryPath(), p)
+  }
+
+  convertDataURL() {
+    return Datauri.sync(this.makeFilePath());
+  }
+
+  static appendSuffix(filePath) {
+    var c = 'abcdefghijklmnopqrstuvwxyz';
+    var r = '';
+    for (var i = 0; i < 8; i++) {
+      r += c[Math.floor(Math.random() * c.length)];
+    }
+    var e = path.extname(filePath);
+    if (e.length > 0) {
+      return filePath.slice(0, -e.length) + '_' + r + e
+    } else {
+      return filePath + '_' + r
+    }
+  }
+
+  static fromBinary(name, frompath) {
+    // Try creating images dir.
+    var dirPath = path.join(getBaseLibraryPath(), 'images');
+    try {fs.mkdirSync(dirPath)} catch (e) {}
+
+    var savePath = path.join(dirPath, name);
+    // Check exists or not.
+    try {
+      var fd = fs.openSync(savePath, 'r');
+      if (fd) {fs.close(fd)}
+      name = this.appendSuffix(name);
+      savePath = path.join(dirPath, name);
+    } catch(e) {}  // If not exists
+    fs.writeFileSync(savePath, fs.readFileSync(frompath));
+    var relativePath = path.join('images', name);
+    return new this('pilemd://' + relativePath);
+  }
+}
+
+
 module.exports = {
   Note: Note,
   Folder: Folder,
@@ -372,5 +450,6 @@ module.exports = {
   getBaseLibraryPath: getBaseLibraryPath,
   setBaseLibraryPath: setBaseLibraryPath,
   makeWatcher: makeWatcher,
-  copyData: copyData
+  copyData: copyData,
+  Image: Image
 };

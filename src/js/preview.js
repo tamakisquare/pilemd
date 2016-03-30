@@ -6,6 +6,8 @@ const marked = require('marked');
 const _ = require('lodash');
 const highlightjs = require('highlight.js/lib/highlight');
 
+const Image = require('./models').Image;
+
 highlightjs.registerLanguage('accesslog', require('highlight.js/lib/languages/accesslog'));
 highlightjs.registerLanguage('actionscript', require('highlight.js/lib/languages/actionscript'));
 highlightjs.registerLanguage('apache', require('highlight.js/lib/languages/apache'));
@@ -170,15 +172,15 @@ function replaceImgtagWithContext(bodyHTML) {
   return bodyHTML.replace(
     /<img.*?src="(https?:\/\/.*?)" (alt="(.*?)"|alt)\/?>/mg,
     (match, p1, p2, p3, offset, string) => {
-      return IMGTAG_TO_CONTEXTMENU_TEMP({link: p1, alt: p3 || ''});
+      return IMGTAG_TO_CONTEXTMENU_TEMP({link: p1, alt: p4 || ''});
     }
-  )
+  );
 }
 
 
 function render(note, v) {
-  var p = replaceImgtagWithContext(replaceAtagToExternal(marked(note.body)));
-    v.$nextTick(() => {
+  var p = replaceAtagToExternal(marked(note.bodyWithDataURL));
+  v.$nextTick(() => {
     Array.prototype.forEach.call(
       document.querySelectorAll('.my-el-todo-list'),
       (el) => {
