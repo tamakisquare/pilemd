@@ -30,4 +30,6 @@ Electron .
 
 * Product Design Fast
 * Light Weight
-* Be cool, Be smart
+* Easy to Start
+* Small to Big
+* Any Platform, Same Experience
