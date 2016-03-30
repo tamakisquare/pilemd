@@ -181,6 +181,21 @@ class Note extends Model {
     return this.splitTitleFromBody().title;
   }
 
+  get bodyWithDataURL() {
+    return this.body.replace(
+      /!\[(.*?)]\((pilemd:\/\/.*?)\)/mg,
+      (match, p1, p2, offset, string) => {
+        try {
+          var dataURL = new Image(p2).convertDataURL();
+        } catch (e) {
+          console.log(e);
+          return match
+        }
+        return '![' + p1 + ']' + '(' + dataURL + ')';
+      }
+    );
+  }
+
   get img() {
     var matched = /(https?|pilemd):\/\/[-a-zA-Z0-9@:%_\+.~#?&//=]+?\.(png|jpeg|jpg|gif)/.exec(this.body);
     if (!matched) {

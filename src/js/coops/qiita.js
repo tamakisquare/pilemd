@@ -92,7 +92,7 @@ module.exports = function(Vue, option) {
           }
           var payload = {
             title: note.title,
-            body: note.body + '\n\nWrote by [PileMd](https://pilemd.com/)',
+            body: note.bodyWithDataURL + '\n\nWrote by [PileMd](https://pilemd.com/)',
             tweet: prompts[1].retValue,
             gist: prompts[2].retValue,
             coediting: false,

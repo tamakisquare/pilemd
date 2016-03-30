@@ -75,7 +75,7 @@ module.exports = function(Vue, options) {
       },
       // Electron methods
       copyNoteBody: function(note) {
-        clipboard.writeText(note.body);
+        clipboard.writeText(note.bodyWithDataURL);
         this.$message('info', 'Copied Markdown to clipboard');
       },
       copyNoteHTML: function(note) {
@@ -94,7 +94,7 @@ module.exports = function(Vue, options) {
         }
         try {
           var fd = fs.openSync(notePath, 'w');
-          fs.writeSync(fd, note.body);
+          fs.writeSync(fd, note.bodyWithDataURL);
         } catch (e) {
           this.$message('error', 'Skipped: File "' + filename + 'exists', 5000);
         }
