@@ -23,7 +23,6 @@ const arr = require('./utils/arr');
 // Vue.js plugins
 Vue.use(require('./components/flashmessage'));
 Vue.use(require('./components/modal'));
-Vue.use(require('./components/previewButton'));
 Vue.use(require('./components/racks'));
 Vue.use(require('./components/notes'));
 Vue.use(require('./components/codemirror'),
@@ -151,6 +150,7 @@ new Vue({
     });
     var app = new ApplicationMenu();
     app.setToggleWidescreen(this.toggleFullScreen);
+    app.setTogglePreview(this.togglePreview);
     app.setAddNewNote(this.addNote);
     app.setImportNotes(this.importNotes);
     app.setMoveSync(this.moveSync);
@@ -161,6 +161,30 @@ new Vue({
   },
   methods: {
     toggleFullScreen: function() { this.isFullScreen = !this.isFullScreen },
+    togglePreview: function() {
+      this.isPreview = !this.isPreview;
+      if (this.isPreview) {
+        var menu = new ApplicationMenu();
+        // FIXME as same as componets/codemirror.js Fucking hell
+        menu.setEditSubmenu([
+          {
+            label: 'Cut',
+            accelerator: 'CmdOrCtrl+X',
+            role: 'cut'
+          },
+          {
+            label: 'Copy',
+            accelerator: 'CmdOrCtrl+C',
+            role: 'copy'
+          },
+          {
+            label: 'Paste',
+            accelerator: 'CmdOrCtrl+V',
+            role: 'paste'
+          }]);
+        menu.setMenu();
+      }
+    },
     addRack: function() {
       var rack = new models.Rack({name: "", ordering: 0});
       var racks = arr.sortBy(this.racks.slice(), 'ordering', true);
