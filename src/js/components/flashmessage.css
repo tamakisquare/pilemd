@@ -1,4 +1,8 @@
 .flashmessage-list {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+
     position: absolute;
     bottom: 8px;
     right: 8px;
