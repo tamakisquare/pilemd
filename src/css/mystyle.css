@@ -242,7 +242,7 @@ body {
 
     color: #333;
 
-    font-family: "Helvetica","Arial", monospace;
+    font-family: "Inconsolata", "Myrica", monospace;
     font-size: 14px;
     line-height: 20px;
 }
@@ -383,14 +383,6 @@ span.cm-piled-formatting-task {
 
 .CodeMirror span.cm-piled-code, code {
     color: #0A3ABF;
-    line-height: 1em;
-    font-family: "Inconsolata", "Myrica", monospace;
-}
-
-.hljs,
-.CodeMirror span[class*=cm-m]:not(.cm-m-markdown) {  /* CodeMirror Inner code but not markdown */
-    line-height: 1em;
-    font-family: "Inconsolata", "Myrica", monospace;
 }
 
 .CodeMirror span.cm-piled-strong,
