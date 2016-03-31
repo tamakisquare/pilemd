@@ -233,7 +233,7 @@ body {
 }
 .CodeMirror,
 .my-editor-preview {
-    margin: 30px 32px 16px 32px;
+    margin: 30px 4vw 16px 4vw;
 
     width: auto;
     min-height: calc(100vh - 46px);
@@ -382,13 +382,13 @@ span.cm-piled-formatting-task {
 }
 
 .CodeMirror span.cm-piled-code, code {
-    color: #487765;
-    font-style: normal;
+    color: #0A3ABF;
     line-height: 1em;
     font-family: "Inconsolata", "Myrica", monospace;
 }
-/* CodeMirror Inner code but not markdown */
-.CodeMirror span[class*=cm-m]:not(.cm-m-markdown) {
+
+.hljs,
+.CodeMirror span[class*=cm-m]:not(.cm-m-markdown) {  /* CodeMirror Inner code but not markdown */
     line-height: 1em;
     font-family: "Inconsolata", "Myrica", monospace;
 }
