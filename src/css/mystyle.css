@@ -47,15 +47,6 @@ body {
     flex-basis: 270px;
 
     z-index: 15;
-
-    transform-style: flat;
-    transition-duration: 0.2s;
-    transition-property: flex-basis;
-    transition-timing-function: ease;
-}
-
-.my-sidebar-enter, .my-sidebar-leave {
-    flex-basis: 0;
 }
 
 .my-sidebar-header {
