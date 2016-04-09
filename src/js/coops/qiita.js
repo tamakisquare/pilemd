@@ -31,44 +31,22 @@ module.exports = function(Vue, option) {
   Vue.use(require('../components/flashmessage'));
 
   Vue.prototype.$qiitaAuth = function(cb, err) {
-    var authWindow = new BrowserWindow(
-      {width: 800,
-        height: 600,
-        fullscreen: false,
-        fullscreenable: false});
-    authWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
-      var matched;
-      if(matched = newUrl.match(/\?code=([^&]*)/)) {
-        var params = {
-          'code': matched[1]
-        };
-        params[ebg('pyvrag_vq')] = qiitaClientId;
-        params[ebg('pyvrag_frperg')] = qiitaClientSecret;
-
-        this.$http.post(qiitaAccessTokenURL, params).then((res) => {
-          // success
-          setQiitaToken(res.data['token']);
-          this.$message('info', 'Login Succeed');
-          if (cb) cb(res.data);
-        }, (res) => {
-          // error
-          this.$message('error', 'Login Failed: ' +
-            res.status + ' ' + res.data.message);
-          if (err) err(res);
-        }).catch(() => {
-          this.$message('error', 'Connection Error');
-        });
-        setTimeout(() => {
-          authWindow.close();
-        }, 0);
-      }
-    });
-
-    authWindow.on('closed', () => {
-      // Cloned
-      authWindow = null;
-    });
-    authWindow.loadURL(qiitaUrl);
+    this.$modal(
+      'Apply Qiita token',
+      'Get Qiita access token with read_qiita, write_qiita scope from account settings page of Qiita.',
+      [{type: 'text', label: 'Access Token', placeholder: '', retValue: ''}],
+      (prompts) => {
+        var token = prompts[0].retValue;
+        if (!(token.length > 0)) {
+          this.$message('error', 'Specify correct string', 5000);
+          return
+        }
+        setQiitaToken(token);
+        this.$message('info', 'Login Succeed');
+        if (cb) {
+          Vue.nextTick(cb);
+        }
+      })
   };
   Vue.prototype.$qiitaPost = function(note) {
     var postNote = () => {
