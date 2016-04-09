@@ -131,6 +131,8 @@ function enterHandler(before, after) {
   delete map["Ctrl-9"];
 
   var keymapOverray = {
+    'Ctrl-Right': CodeMirror.keyMap.emacs['Alt-F'],
+    'Ctrl-Left': CodeMirror.keyMap.emacs['Alt-B'],
     'Ctrl-C': copyText,
     'Alt-W': copyText,
     'Ctrl-Y': pasteText,
