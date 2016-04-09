@@ -113,7 +113,6 @@ module.exports = function(Vue, options) {
           menu.append(new MenuItem({label: 'Open Qiita Post on Browser', click: () => {
             shell.openExternal(note.qiitaURL);
           }}));
-          menu.append(new MenuItem({label: 'Sync Qiita Post (Not Supported Yet)', enabled: false}));
         } else {
           menu.append(new MenuItem({label: 'Share on Qiita...', click: () => {this.qiitaPost(note)}}));
         }

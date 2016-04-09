@@ -95,8 +95,4 @@ module.exports = function(Vue, option) {
       postNote();
     }
   };
-
-  Vue.prototype.$qiitaGet = function(note) {
-
-  }
 };
