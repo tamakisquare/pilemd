@@ -17,9 +17,9 @@ var BASE_OPTION = {
     dir: '.',
     overwrite: true,
     arch: 'x64',
-    version: '0.37.5',
-    'build-version': '0.9',
-    'app-version': '0.9',
+    version: '0.37.3',
+    'build-version': '0.9.0',
+    'app-version': '0.9.0',
     ignore: '(node_modules\/(codemirror|highlight.js|marked|vue|vue-resource)|src|icons|releases|.idea.*|README\.md|\.DS_Store|env|gulpfile\.js|webpack\.config\.js|\.gitignore)',
     asar: true,
     prune: true
@@ -41,7 +41,7 @@ gulp.task('electron', function(done) {
 
 gulp.task('electron-linux', function(done) {
   packager(_.defaults(_.clone(BASE_OPTION), {
-    out: 'releases/linux/',
+    out: './releases/linux/',
     platform: 'linux'
   }), function() {
     done();
@@ -51,7 +51,7 @@ gulp.task('electron-linux', function(done) {
 
 gulp.task('electron-windows', function(done) {
   var c = _.defaults(_.clone(BASE_OPTION), {
-    out: 'releases/windows/',
+    out: './releases/windows/',
     platform: 'win32',
     icon: './icons/pilemd.ico'
   });
