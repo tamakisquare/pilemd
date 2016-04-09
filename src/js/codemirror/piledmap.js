@@ -133,6 +133,7 @@ function enterHandler(before, after) {
   var keymapOverray = {
     'Ctrl-Right': CodeMirror.keyMap.emacs['Alt-F'],
     'Ctrl-Left': CodeMirror.keyMap.emacs['Alt-B'],
+    "End": "goDocEnd", "Home": "goDocStart",
     'Ctrl-C': copyText,
     'Alt-W': copyText,
     'Ctrl-Y': pasteText,
