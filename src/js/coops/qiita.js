@@ -1,18 +1,9 @@
 const electron = require('electron');
-const remote = electron.remote;
-const BrowserWindow = remote.BrowserWindow;
 
 const models = require('../models');
 const Note = models.Note;
-const co = require('../constants');
 const ebg = require('../utils/ebg');
 
-const qiitaClientId = ebg(co.slice(0, 40));
-const qiitaClientSecret = ebg(co.slice(40, 80));
-const qiitaUrl = "https://qiita.com/api/v2/oauth/authorize?" +
-  "client_id=" + qiitaClientId + "&" +
-  "scope=write_qiita read_qiita";
-const qiitaAccessTokenURL = 'https://qiita.com/api/v2/access_tokens';
 const qiitaItemsURL = 'https://qiita.com/api/v2/items';
 
 const QIITA_TOKEN_KEY = 'coops.qiita.token';

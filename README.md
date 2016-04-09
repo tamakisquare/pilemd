@@ -4,13 +4,6 @@ https://pilemd.com/
 
 ![PileMd](https://pilemd.com/images/top1.png)
 
-## Put constants
-
-```
-cat > js/constants.js
-module.exports = ''  // Input credentials
-```
-
 ## Run
 
 ```

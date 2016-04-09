@@ -9,7 +9,6 @@ const models = require('./models');
 const initialModels = require('./initialModels');
 const preview = require('./preview');
 const searcher = require('./searcher');
-const co = require('./constants');
 
 // Electron things
 const remote = require('electron').remote;
