@@ -17,9 +17,9 @@ var BASE_OPTION = {
     dir: '.',
     overwrite: true,
     arch: 'x64',
-    version: '0.37.2',
-    'build-version': '0.8.3',
-    'app-version': '0.8.3',
+    version: '0.37.5',
+    'build-version': '0.9',
+    'app-version': '0.9',
     ignore: '(node_modules\/(codemirror|highlight.js|marked|vue|vue-resource)|src|icons|releases|.idea.*|README\.md|\.DS_Store|env|gulpfile\.js|webpack\.config\.js|\.gitignore)',
     asar: true,
     prune: true
@@ -43,16 +43,8 @@ gulp.task('electron-linux', function(done) {
   packager(_.defaults(_.clone(BASE_OPTION), {
     out: 'releases/linux/',
     platform: 'linux'
-  }), function(err, apppath) {
+  }), function() {
     done();
-    fs.writeFileSync(
-      apppath[0] + '/README.md',
-      fs.readFileSync('./forlinux/README.md')
-    );
-    fs.writeFileSync(
-      apppath[0] + '/LICENSE',
-      fs.readFileSync('./LICENSE')
-    );
   });
 });
 
