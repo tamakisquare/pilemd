@@ -3,7 +3,7 @@
 https://pilemd.com/
 
 ![PileMd](https://pilemd.com/images/top1.png)
-Fund me on [Gratipay](https://gratipay.com/~hirokiky/)
+Fund PileMd on [Gratipay](https://gratipay.com/pilemd/)
 
 ## Run
 
