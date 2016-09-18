@@ -27,3 +27,9 @@ Electron .
 * Easy to Start
 * Small to Big
 * Any Platform, Same Experience
+
+## Contributing
+
+* Making change
+* Add your name to AUTHORS file
+* Create Pull-Request
