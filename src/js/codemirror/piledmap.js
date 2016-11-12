@@ -3,6 +3,7 @@ const copyText = elutils.copyText;
 const cutText = elutils.cutText;
 const pasteText = elutils.pasteText;
 const killLine = elutils.killLine;
+const deleteLine = elutils.deleteLine;
 
 const TODO_REGEXP = /^( *)((\*|\-) \[( |x)] )(.*)$/;
 const LI_REGEXP = /^( *)((\*|\-) )(.*)$/;
@@ -142,6 +143,7 @@ function enterHandler(before, after) {
     'Ctrl-X': cutText,
     'Ctrl-W': cutText,
     'Ctrl-K': killLine,
+    'Shift-Ctrl-K': deleteLine,
     'Ctrl-Z': 'undo',
     'Ctrl-S': 'findPersistent',
     'Ctrl-R': 'replace',
