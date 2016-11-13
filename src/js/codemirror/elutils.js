@@ -1,6 +1,7 @@
 const electron = require('electron');
 const clipboard = electron.clipboard;
-
+const CodeMirror = require('codemirror');
+const Pos = CodeMirror.Pos;
 
 function flashSelection(cm) {
   cm.setExtending(false);
@@ -53,4 +54,6 @@ module.exports = {
   copyText: copyText,
   cutText: cutText,
   pasteText: pasteText,
+  swapLineDown: swapLineDown,
+  swapLineUp: swapLineUp
 };
