@@ -15,22 +15,6 @@ function swapLineDown(cm) {
 
 }
 
-function deleteLine(cm) {
-  flashSelection(cm);
-  var c = cm.getCursor();
-  var doc = cm.doc;
-
-  var to;
-  if (c.line < doc.lineCount()-1) {
-    to = {line: c.line + 1, ch: 0};
-  }
-  else {
-    to = {line: c.line, ch: doc.getLine(c.line).length};
-  }
-
-  cm.replaceRange('', {line: c.line, ch: 0}, to);
-}
-
 /* Electron things */
 function killLine(cm) {
   flashSelection(cm);
@@ -69,5 +53,4 @@ module.exports = {
   copyText: copyText,
   cutText: cutText,
   pasteText: pasteText,
-  deleteLine: deleteLine
 };
